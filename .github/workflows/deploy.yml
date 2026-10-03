@@ -28,13 +28,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install --include=dev
+          chmod -R +x node_modules/.bin || true
 
       - name: Build site
-        run: npm run build
+        run: |
+          chmod +x ./node_modules/.bin/vite || true
+          npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
