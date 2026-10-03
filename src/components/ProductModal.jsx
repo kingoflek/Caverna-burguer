@@ -88,7 +88,7 @@ export default function ProductModal() {
               className="w-full h-full object-cover"
               onError={(e) => {
                 e.target.onerror = null;
-                e.target.src = '/images/products/caverna-burguer.jpg';
+                e.target.src = './images/products/caverna-burguer.jpg';
               }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-caverna-900 via-transparent to-transparent" />

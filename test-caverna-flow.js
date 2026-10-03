@@ -42,7 +42,7 @@ console.log(`   ✓ 18 produtos cadastrados: ${burgers150g.length} Burgers 150g,
 console.log('\n3. Testando regra de preços (não inventar preços)...');
 PRODUCTS.forEach(p => {
   assert.strictEqual(p.price, 0, `Produto ${p.name} possui preço diferente de 0!`);
-  assert(p.image.startsWith('/images/products/'), `Produto ${p.name} imagem fora do padrão: ${p.image}`);
+  assert(p.image.includes('/images/products/'), `Produto ${p.name} imagem fora do padrão: ${p.image}`);
 });
 console.log('   ✓ Todos os 18 produtos iniciam com price: 0 conforme especificação.');
 

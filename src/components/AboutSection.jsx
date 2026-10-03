@@ -38,12 +38,12 @@ export default function AboutSection() {
               {/* LOGO */}
               <div className="w-36 h-36 rounded-2xl overflow-hidden border border-redaccent-800/60 p-2 bg-caverna-900 shadow-lg">
                 <img
-                  src="/images/logo.png"
+                  src="./images/logo.png"
                   alt="Logo Caverna Burger"
                   className="w-full h-full object-contain"
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = '/images/logo.jpeg';
+                    e.target.src = './images/logo.jpeg';
                   }}
                 />
               </div>

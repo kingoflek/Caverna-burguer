@@ -119,13 +119,13 @@ export default function Hero() {
             <div className="relative group w-full max-w-md sm:max-w-lg aspect-square rounded-3xl overflow-hidden border border-caverna-700/60 bg-caverna-900/90 shadow-2xl p-3">
               <div className="w-full h-full rounded-2xl overflow-hidden relative">
                 <img
-                  src="/images/products/hero-burger.jpg"
+                  src="./images/products/hero-burger.jpg"
                   alt="Hambúrguer artesanal Caverna Burger"
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
                   loading="eager"
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = '/images/products/caverna-burguer.jpg';
+                    e.target.src = './images/products/caverna-burguer.jpg';
                   }}
                 />
                 

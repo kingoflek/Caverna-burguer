@@ -50,12 +50,12 @@ export default function Footer() {
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-xl overflow-hidden bg-caverna-900 border border-redaccent-800/50 p-1">
                 <img
-                  src="/images/logo.png"
+                  src="./images/logo.png"
                   alt="Logo Caverna Burger"
                   className="w-full h-full object-contain"
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = '/images/logo.jpeg';
+                    e.target.src = './images/logo.jpeg';
                   }}
                 />
               </div>

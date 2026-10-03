@@ -40,7 +40,7 @@ export default function ProductCard({ product }) {
             className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-out"
             onError={(e) => {
               e.target.onerror = null;
-              e.target.src = '/images/products/caverna-burguer.jpg';
+              e.target.src = './images/products/caverna-burguer.jpg';
             }}
           />
 

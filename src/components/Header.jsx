@@ -60,12 +60,12 @@ export default function Header() {
           >
             <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-lg overflow-hidden border border-redaccent-800/40 bg-caverna-900 shadow-md group-hover:border-redaccent-600 transition-colors">
               <img
-                src="/images/logo.png"
+                src="./images/logo.png"
                 alt="Logo Caverna Burger"
                 className="w-full h-full object-contain p-0.5"
                 onError={(e) => {
                   e.target.onerror = null;
-                  e.target.src = '/images/logo.jpeg';
+                  e.target.src = './images/logo.jpeg';
                 }}
               />
             </div>
