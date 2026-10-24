@@ -1,48 +1,61 @@
 import React from 'react';
-import { Flame, ArrowRight } from 'lucide-react';
+import { Sparkles, ArrowRight } from 'lucide-react';
 import ProductCard from './ProductCard';
 import { getFeaturedProducts } from '../data/products';
 
 export default function FeaturedSection() {
-  const featured = getFeaturedProducts().slice(0, 4);
+  const featuredProducts = getFeaturedProducts();
 
-  if (featured.length === 0) return null;
+  const handleScrollToCatalog = (e) => {
+    e.preventDefault();
+    const element = document.querySelector('#catalogo');
+    if (element) {
+      const headerOffset = 90;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  if (featuredProducts.length === 0) return null;
 
   return (
-    <section id="destaques" className="py-16 sm:py-20 bg-caverna-900/60 relative border-t border-b border-caverna-800/60">
-      
-      {/* BACKGROUND ACCENTS */}
-      <div className="absolute top-1/2 left-0 -translate-y-1/2 w-64 h-64 bg-redaccent-900/10 rounded-full blur-3xl pointer-events-none" />
-
+    <section id="destaques" className="py-14 sm:py-20 bg-secret-bg relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* HEADER OF SECTION */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+        {/* SECTION HEADER */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 sm:mb-12 border-b border-secret-border pb-6">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-redaccent-900/40 border border-redaccent-700/50 text-redaccent-400 text-xs font-bold uppercase tracking-wider mb-3">
-              <Flame className="w-3.5 h-3.5 fill-redaccent-400" />
-              Seleção Especial
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-redaccent-950/80 border border-redaccent-800/60 mb-2">
+              <Sparkles className="w-3.5 h-3.5 text-redaccent-400" />
+              <span className="text-[11px] font-bold uppercase tracking-wider text-redaccent-300">
+                Mais Procurados
+              </span>
             </div>
-            <h2 className="font-display font-black text-2xl sm:text-3xl md:text-4xl text-white tracking-tight">
-              Os Favoritos da Caverna
+            <h2 className="font-display font-black text-2xl sm:text-3xl lg:text-4xl text-white tracking-tight">
+              Faróis em Destaque
             </h2>
-            <p className="text-caverna-400 text-sm sm:text-base mt-1">
-              Os hambúrgueres mais pedidos da nossa chapa para você não errar na escolha.
+            <p className="text-xs sm:text-sm text-secret-muted mt-1 max-w-xl">
+              Seleção dos faróis automotivos mais vendidos com pronta entrega e preços competitivos de varejo e atacado.
             </p>
           </div>
 
           <a
-            href="#cardapio"
-            className="inline-flex items-center gap-2 text-sm font-bold text-redaccent-400 hover:text-redaccent-300 transition-colors group self-start sm:self-auto"
+            href="#catalogo"
+            onClick={handleScrollToCatalog}
+            className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-redaccent-400 hover:text-redaccent-300 uppercase tracking-wider transition-colors self-start sm:self-auto group"
           >
-            <span>Ver cardápio completo</span>
+            <span>Ver Catálogo Completo</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </a>
         </div>
 
-        {/* GRID OF FEATURED ITEMS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featured.map((product) => (
+        {/* PRODUCT GRID */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {featuredProducts.slice(0, 8).map(product => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>

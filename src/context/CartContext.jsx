@@ -1,12 +1,14 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { STORE_CONFIG } from '../config/store.js';
 
 const CartContext = createContext();
 
-const STORAGE_KEY = 'caverna_burger_cart_v1';
-const CUSTOMER_STORAGE_KEY = 'caverna_burger_customer_v1';
+const STORAGE_KEY = 'secret_parts_cart_v1';
+const CUSTOMER_STORAGE_KEY = 'secret_parts_customer_v1';
+const FAVORITES_STORAGE_KEY = 'secret_parts_favorites_v1';
 
 export function CartProvider({ children }) {
-  // Carrinho inicial vindo do localStorage
+  // Carrinho de compras no localStorage
   const [items, setItems] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -17,46 +19,72 @@ export function CartProvider({ children }) {
     }
   });
 
-  // Dados do formulário de checkout salvos para conveniência
+  // Lista de favoritos (IDs dos produtos)
+  const [favorites, setFavorites] = useState(() => {
+    try {
+      const saved = localStorage.getItem(FAVORITES_STORAGE_KEY);
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  });
+
+  // Opção de frete selecionada
+  const [selectedShippingId, setSelectedShippingId] = useState(
+    STORE_CONFIG.shippingOptions[0]?.id || 'express_local'
+  );
+
+  // Dados do formulário de checkout salvos para conveniência do cliente
   const [customer, setCustomer] = useState(() => {
     try {
       const saved = localStorage.getItem(CUSTOMER_STORAGE_KEY);
       return saved ? JSON.parse(saved) : {
         name: '',
         phone: '',
+        cep: '',
         orderType: 'delivery', // 'delivery' ou 'pickup'
         street: '',
         number: '',
         complement: '',
         neighborhood: '',
+        cityState: '',
         reference: '',
+        vehicleDetails: '', // Ex.: Chevrolet Onix 2017 LT 1.4
         generalNotes: '',
       };
     } catch (e) {
       return {
         name: '',
         phone: '',
+        cep: '',
         orderType: 'delivery',
         street: '',
         number: '',
         complement: '',
         neighborhood: '',
+        cityState: '',
         reference: '',
+        vehicleDetails: '',
         generalNotes: '',
       };
     }
   });
 
-  // Estados de navegação dos modais
+  // Modais e navegações
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
+  const [isWholesaleModalOpen, setIsWholesaleModalOpen] = useState(false);
+  const [isCompatibilityModalOpen, setIsCompatibilityModalOpen] = useState(false);
+  const [compatibilityProduct, setCompatibilityProduct] = useState(null);
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [isFavoritesOpen, setIsFavoritesOpen] = useState(false);
 
-  // Notificação de animação ao adicionar
+  // Feedback toast ao adicionar ao carrinho
   const [lastAddedItem, setLastAddedItem] = useState(null);
 
-  // Salva no localStorage quando o carrinho mudar
+  // Salva itens no localStorage
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
@@ -74,12 +102,20 @@ export function CartProvider({ children }) {
     }
   }, [customer]);
 
+  // Salva favoritos no localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
+    } catch (e) {
+      console.error('Erro ao salvar favoritos:', e);
+    }
+  }, [favorites]);
+
   /**
-   * Adiciona um produto à comanda/carrinho
+   * Adiciona um farol ao carrinho
    */
   const addToCart = (product, quantity = 1, observation = '') => {
     setItems(prevItems => {
-      // Cria uma chave única baseada no ID do produto e na observação
       const trimmedObs = (observation || '').trim();
       const existingIndex = prevItems.findIndex(
         item => item.productId === product.id && (item.observation || '').trim() === trimmedObs
@@ -97,10 +133,19 @@ export function CartProvider({ children }) {
           id: `${product.id}_${Date.now()}_${Math.random().toString(36).substring(2, 5)}`,
           productId: product.id,
           name: product.name,
-          category: product.category,
+          sku: product.sku,
+          oemCode: product.oemCode,
+          vehicleBrand: product.vehicleBrand,
+          vehicleModel: product.vehicleModel,
+          yearStart: product.yearStart,
+          yearEnd: product.yearEnd,
+          side: product.side,
+          sideLabel: product.sideLabel,
+          typeLabel: product.typeLabel,
           price: product.price || 0,
-          image: product.image,
-          description: product.description,
+          wholesalePrice: product.wholesalePrice,
+          wholesaleMinQty: product.wholesaleMinQty,
+          image: product.images?.[0] || './images/products/farol-onix.jpg',
           quantity: quantity,
           observation: trimmedObs,
         };
@@ -109,7 +154,7 @@ export function CartProvider({ children }) {
     });
 
     setLastAddedItem(product.name);
-    setTimeout(() => setLastAddedItem(null), 2500);
+    setTimeout(() => setLastAddedItem(null), 3000);
   };
 
   /**
@@ -128,17 +173,6 @@ export function CartProvider({ children }) {
   };
 
   /**
-   * Atualiza a observação de um item específico
-   */
-  const updateItemObservation = (cartItemId, observation) => {
-    setItems(prev =>
-      prev.map(item =>
-        item.id === cartItemId ? { ...item, observation } : item
-      )
-    );
-  };
-
-  /**
    * Remove um item do carrinho
    */
   const removeFromCart = (cartItemId) => {
@@ -146,20 +180,50 @@ export function CartProvider({ children }) {
   };
 
   /**
-   * Limpa todo o carrinho
+   * Limpa o carrinho
    */
   const clearCart = () => {
     setItems([]);
   };
 
+  /**
+   * Alterna produto nos favoritos
+   */
+  const toggleFavorite = (productId) => {
+    setFavorites(prev =>
+      prev.includes(productId)
+        ? prev.filter(id => id !== productId)
+        : [...prev, productId]
+    );
+  };
+
+  const isFavorite = (productId) => favorites.includes(productId);
+
   // Cálculos do carrinho
   const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
-  
+
   const subtotal = items.reduce((acc, item) => {
-    return acc + (item.price > 0 ? item.price * item.quantity : 0);
+    // Aplica preço de atacado se a quantidade atingir o mínimo
+    const itemPrice = (item.wholesalePrice && item.quantity >= (item.wholesaleMinQty || 4))
+      ? item.wholesalePrice
+      : (item.price || 0);
+    return acc + (itemPrice * item.quantity);
   }, 0);
 
   const hasUnpricedItems = items.some(item => !item.price || item.price === 0);
+
+  // Frete selecionado
+  const selectedShippingOption = STORE_CONFIG.shippingOptions.find(
+    opt => opt.id === selectedShippingId
+  ) || STORE_CONFIG.shippingOptions[0];
+
+  const shippingCost = customer.orderType === 'pickup'
+    ? 0
+    : (selectedShippingOption?.freeAbove && subtotal >= selectedShippingOption.freeAbove)
+    ? 0
+    : (selectedShippingOption?.price || 0);
+
+  const total = subtotal + shippingCost;
 
   return (
     <CartContext.Provider
@@ -167,18 +231,27 @@ export function CartProvider({ children }) {
         items,
         totalItems,
         subtotal,
+        shippingCost,
+        selectedShippingOption,
+        selectedShippingId,
+        setSelectedShippingId,
+        total,
         hasUnpricedItems,
         addToCart,
         updateQuantity,
-        updateItemObservation,
         removeFromCart,
         clearCart,
-        
-        // Dados do formulário
+
+        // Favoritos
+        favorites,
+        toggleFavorite,
+        isFavorite,
+
+        // Dados do cliente
         customer,
         setCustomer,
 
-        // Modais e navegação
+        // Modais de navegação
         isCartOpen,
         setIsCartOpen,
         openCart: () => setIsCartOpen(true),
@@ -204,6 +277,29 @@ export function CartProvider({ children }) {
           setIsReviewOpen(true);
         },
         closeReview: () => setIsReviewOpen(false),
+
+        isWholesaleModalOpen,
+        openWholesaleModal: () => setIsWholesaleModalOpen(true),
+        closeWholesaleModal: () => setIsWholesaleModalOpen(false),
+
+        isCompatibilityModalOpen,
+        openCompatibilityModal: (prod) => {
+          setCompatibilityProduct(prod);
+          setIsCompatibilityModalOpen(true);
+        },
+        closeCompatibilityModal: () => {
+          setCompatibilityProduct(null);
+          setIsCompatibilityModalOpen(false);
+        },
+        compatibilityProduct,
+
+        isAdminOpen,
+        openAdmin: () => setIsAdminOpen(true),
+        closeAdmin: () => setIsAdminOpen(false),
+
+        isFavoritesOpen,
+        openFavorites: () => setIsFavoritesOpen(true),
+        closeFavorites: () => setIsFavoritesOpen(false),
 
         lastAddedItem,
       }}

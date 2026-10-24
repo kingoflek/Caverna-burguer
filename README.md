@@ -1,152 +1,189 @@
-# 🍔 Caverna Burger — Cardápio Digital & Comanda Online
+# 🔴 SECRET PARTS — Loja Virtual Especializada em Faróis Automotivos
 
-Aplicação web completa, moderna, responsiva e de alta performance desenvolvida sob medida para a **Caverna Burger**, integrando **Cardápio Digital**, **Comanda/Carrinho com Observações** e **Envio Automático do Pedido pelo WhatsApp**.
+Plataforma de e-commerce automotiva de alta performance, desenvolvida especialmente para a **SECRET PARTS**, especializada **EXCLUSIVAMENTE em FARÓIS AUTOMOTIVOS**, com fluxo integrado para **Varejo** (consumidor final) e **Atacado / Distribuição** (lojistas, oficinas e revendedores).
 
 ---
 
-## 🚀 Como Iniciar o Projeto
+## 🚀 Como Iniciar e Executar o Projeto
 
-### 1. Iniciar em modo de desenvolvimento
+### 1. Iniciar em Modo de Desenvolvimento
 No terminal, dentro da pasta do projeto:
 ```bash
 npm run dev
 ```
-O site estará disponível em: `http://localhost:3000`
+O site estará disponível imediatamente em: `http://localhost:3000`
 
-### 2. Iniciar pelo atalho da Área de Trabalho (Windows)
-Basta dar dois cliques no arquivo:
-**`Iniciar Caverna Burger.bat`** presente na Área de Trabalho.
+### 2. Gerar Versão de Produção (Build)
+```bash
+npm run build
+```
+Os arquivos otimizados e prontos para publicação serão gerados na pasta `dist/`.
+
+### 3. Publicar no GitHub Pages
+```bash
+npm run deploy
+```
 
 ---
 
-## 🛠️ Guia Rápido de Manutenção (Onde Alterar)
+## 🚗 Arquitetura Comercial da Secret Parts
 
-Este projeto foi estruturado para ser extremamente fácil de atualizar sem precisar mexer em códigos complexos.
+### 1. Varejo (Consumidor Final)
+- Exibição de preços unitários em reais com alinhamento visual moderno.
+- Busca multifacetada por **Marca, Modelo, Ano e Lado (Esquerdo/Direito/Par)**.
+- Conferência técnica do veículo do cliente antes da finalização.
+- Envio estruturado do pedido para o WhatsApp oficial com código OEM e SKU.
 
-### 📍 1. Configurações da Loja (WhatsApp, Instagram, Horários, Endereço)
+### 2. Atacado & Distribuição B2B
+- Modal e formulário dedicado para cotação em quantidade (`WholesaleSection` e `WholesaleModal`).
+- Preços escalonados por volume a partir de quantidade mínima configurável (`wholesalePrice` e `wholesaleMinQty`).
+- Geração de proposta comercial estruturada com dados da empresa (Razão Social, CNPJ, Cidade/UF, volume e códigos desejados).
+
+### 3. Logística e Entrega Regional
+- Simulador de CEP e opções de envio regional configuradas em [`src/config/store.js`](file:///C:/Users/delta/.gemini/antigravity/scratch/caverna-burger/src/config/store.js):
+  - **Entrega Expressa Regional:** envio rápido por motoboy / utilitário.
+  - **Transportadora / Rodoviário:** embalagens reforçadas contra impactos.
+  - **Retirada no Centro de Distribuição:** balcão de peças com separação ágil.
+
+---
+
+## 🛠️ Guia do Proprietário (Onde e Como Alterar)
+
+### 📍 1. Configurações da Loja e WhatsApp
 **Arquivo:** [`src/config/store.js`](file:///C:/Users/delta/.gemini/antigravity/scratch/caverna-burger/src/config/store.js)
 
 ```javascript
 export const STORE_CONFIG = {
-  name: "Caverna Burger",
-  displayName: "CAVERNA BURGER",
-  tagline: "O sabor que sai da Caverna.",
+  name: "Secret Parts",
+  tagline: "Faróis automotivos com preço de verdade.",
   
-  // 👉 Coloque aqui o número do WhatsApp com DDD (somente dígitos)
-  // Exemplo para São Paulo: "5511999999999"
+  // 👉 WhatsApp oficial (apenas números com DDD, ex: "5511999999999")
   whatsapp: "", 
 
-  // 👉 Coloque o usuário do Instagram (sem @)
-  instagram: "",
+  // 👉 WhatsApp específico de atacado (opcional)
+  whatsappWholesale: "",
 
-  // 👉 Endereço da loja
-  address: "",
+  // 👉 E-mail comercial e redes sociais
+  email: "contato@secretparts.com.br",
+  instagram: "secretparts.farois",
 
-  // 👉 Horários de atendimento
-  openingHours: "",
+  // 👉 Senha de acesso ao Painel Administrativo Interno
+  adminPin: "secretparts2026",
 };
 ```
 
 ---
 
-### 🍔 2. Produtos e Preços do Cardápio
+### 💡 2. Como Cadastrar e Atualizar Faróis com o Antigravity
 **Arquivo:** [`src/data/products.js`](file:///C:/Users/delta/.gemini/antigravity/scratch/caverna-burger/src/data/products.js)
 
-Todos os produtos estão centralizados neste arquivo:
+Todo o catálogo de faróis está centralizado neste arquivo com estrutura rica e tipada:
 
-#### Para alterar o preço de um lanche:
-Basta alterar o campo `price: 0` para o valor desejado em reais:
 ```javascript
 {
-  id: "caverna-burguer",
-  name: "Caverna Burguer",
-  price: 28.50, // 👈 Altere aqui
-  // ...
+  id: "farol-onix-2012-2019-esq",
+  name: "Farol Chevrolet Onix / Prisma Máscara Negra Foco Duplo - Lado Esquerdo",
+  slug: "farol-chevrolet-onix-prisma-mascara-negra-esquerdo",
+  sku: "SP-CHV-1011",
+  oemCode: "52064893",
+  vehicleBrand: "Chevrolet",
+  vehicleModel: "Onix",
+  yearStart: 2012,
+  yearEnd: 2019,
+  side: "esquerdo", // "esquerdo", "direito" ou "par"
+  sideLabel: "Lado Esquerdo (Motorista)",
+  type: "mascara-negra", // "mascara-negra", "led-drl", "foco-duplo", "foco-simples", "projetor"
+  manufacturer: "Arteb / Orgus",
+  price: 389.90,          // Preço de varejo
+  wholesalePrice: 299.00, // Preço de atacado
+  wholesaleMinQty: 4,     // Quantidade mínima para atacado
+  originalPrice: 449.90,  // Preço anterior (se em oferta)
+  isOffer: true,          // true para aparecer nas Ofertas da Semana
+  featured: true,         // true para aparecer nos Destaques
+  stockStatus: "disponivel", // "disponivel", "poucas_unidades", "sob_consulta", "indisponivel"
+  images: ["./images/products/farol-onix.jpg"],
+  specifications: {
+    lente: "Policarbonato liso de alta resistência UV",
+    foco: "Duplo com regulagem precisa",
+    lampadas: "H4 e H1"
+  },
+  compatibilityNotes: "Aplica-se em Onix 2012 a 2019 e Prisma 2013 a 2019."
 }
 ```
-> *Nota: Enquanto o preço estiver `0`, o cardápio exibirá automaticamente **"Consultar"**, sem inventar valores.*
 
-#### Para adicionar um novo lanche ou sobremesa:
-Basta copiar e colar um bloco de produto na lista:
-```javascript
-{
-  id: "novo-burger",
-  name: "Novo Burger Caverna",
-  category: "burgers", // "burgers", "smash" ou "milkshakes"
-  description: "Descrição dos ingredientes selecionados...",
-  price: 32.00,
-  image: "/images/products/novo-burger.jpg",
-  featured: false, // se true, aparece nos destaques da Home
-  available: true  // se false, aparece como "Indisponível"
-}
-```
+> **Dica Antigravity:** Você pode simplesmente pedir no chat:
+> *"Antigravity, altere o preço do Farol Onix para R$ 399,90 e marque como Poucas Unidades"* ou *"Antigravity, cadastre estes 5 novos faróis de Corolla"* que a alteração é feita instantaneamente de forma segura.
 
 ---
 
-### 📸 3. Como Substituir ou Adicionar Fotos dos Produtos
+### 📸 3. Onde Colocar Novas Fotos de Faróis
 **Pasta:** `public/images/products/`
-
-- As imagens ficam salvas diretamente dentro da pasta `public/images/products/`.
-- Se você substituir qualquer imagem mantendo o mesmo nome (exemplo: `caverna-bacon.jpg`), o site atualizará a foto imediatamente.
-- Se usar uma foto com outro nome, basta atualizar o campo `image: "/images/products/novo-nome.jpg"` no produto dentro de `src/data/products.js`.
+- Guarde fotos com fundo escuro ou neutro no formato JPG ou PNG (resolução recomendada: 800x600 ou 1000x750).
+- Insira o caminho relativo no campo `images: ["./images/products/nome-do-farol.jpg"]`.
 
 ---
 
-### 📁 4. Estrutura Organizada do Projeto
+### 🔒 4. Painel Administrativo Integrado
+O site possui um painel administrativo acessível pelo rodapé no link **"Painel do Gestor"** (senha padrão: `secretparts2026`).
+Pelo painel você pode:
+- Alternar status de estoque de qualquer farol (Disponível, Poucas Unidades, Sob Consulta, Indisponível).
+- Ativar ou desativar promoções com um clique.
+- Ocultar ou exibir produtos do catálogo.
+- Exportar backup completo do catálogo em JSON.
+
+---
+
+## 📁 Estrutura de Arquivos do Projeto
 
 ```text
-caverna-burger/
+secret-parts/
 ├── public/
 │   ├── images/
-│   │   ├── logo.png               # Logo oficial Caverna Burger
-│   │   ├── logo.jpeg              # Logo oficial Caverna Burger
-│   │   └── products/              # Fotos individuais de cada produto
+│   │   ├── logo.svg                   # Logotipo vetorial oficial Secret Parts
+│   │   ├── logo-light.svg             # Logotipo versão fundo claro
+│   │   ├── logo-icon.svg              # Ícone quadrado do logotipo
+│   │   ├── logo-header.png            # Logo rasterizado transparente do header
+│   │   ├── favicon.png                # Favicon automotivo
+│   │   ├── hero-headlight-clean.png   # Fotografia de alta resolução do farol hero
+│   │   └── products/                  # Fotografias de catálogo dos faróis automotivos
+│   ├── robots.txt                     # Indexação e SEO
+│   └── sitemap.xml                    # Mapa do site para mecanismos de busca
 ├── src/
-│   ├── components/                # Componentes modulares reutilizáveis
-│   │   ├── Header.jsx             # Header responsivo com logo e carrinho
-│   │   ├── Hero.jsx               # Hero banner com iluminação e destaque
-│   │   ├── FeaturedSection.jsx    # "Os Favoritos da Caverna"
-│   │   ├── CategoryNavigation.jsx # Abas e filtros de categorias
-│   │   ├── ProductCard.jsx        # Card moderno com imagem, preço e botão adicionar
-│   │   ├── ProductGrid.jsx        # Grade responsiva de produtos
-│   │   ├── ProductModal.jsx       # Modal detalhado do produto com observações
-│   │   ├── CartDrawer.jsx         # Comanda lateral com resumo e controle de quantidades
-│   │   ├── FloatingCartBar.jsx    # Botão flutuante mobile ("🛒 Ver Pedido")
-│   │   ├── CheckoutModal.jsx      # Formulário de Entrega (Delivery) ou Retirada
-│   │   ├── OrderReviewModal.jsx   # Revisão final estilo recibo antes de enviar
-│   │   ├── HowToOrderSection.jsx  # Passo a passo de como pedir
-│   │   ├── AboutSection.jsx       # Informações institucionais sobre a marca
-│   │   ├── ContactSection.jsx     # Seção de contato oficial
-│   │   └── Footer.jsx             # Rodapé completo
+│   ├── components/
+│   │   ├── Header.jsx                 # Cabeçalho com busca, carrinho, favoritos e B2B
+│   │   ├── Hero.jsx                   # Banner principal inspirado no design de referência
+│   │   ├── VehicleSelector.jsx        # Seletor rápido de faróis (Marca, Modelo, Ano, Lado)
+│   │   ├── FeaturedSection.jsx        # Seção de faróis em destaque
+│   │   ├── OffersSection.jsx          # Seção de ofertas com preço anterior e promocional
+│   │   ├── CatalogSection.jsx         # Catálogo completo com busca e filtros multifacetados
+│   │   ├── WholesaleSection.jsx       # Seção e formulário comercial para distribuidores B2B
+│   │   ├── RegionalDeliverySection.jsx# Simulador de CEP e opções de entrega rápida
+│   │   ├── HowToBuySection.jsx        # Passo a passo de compra segura
+│   │   ├── ProductCard.jsx            # Card do farol com badges técnicas e preços
+│   │   ├── ProductModal.jsx           # Detalhes completos, especificações e compatibilidade
+│   │   ├── CartDrawer.jsx             # Carrinho lateral com seletor de frete
+│   │   ├── CheckoutModal.jsx          # Coleta de dados de entrega e veículo do cliente
+│   │   ├── OrderReviewModal.jsx       # Revisão final e envio formatado ao WhatsApp
+│   │   ├── WholesaleModal.jsx         # Modal de cotação rápida para lojistas
+│   │   ├── CompatibilityModal.jsx     # Modal para tirar dúvidas de compatibilidade
+│   │   ├── FavoritesModal.jsx         # Modal de faróis salvos
+│   │   ├── AdminModal.jsx             # Painel do gestor protegido por senha
+│   │   ├── FloatingCartBar.jsx        # Barra inferior de carrinho flutuante no celular
+│   │   └── Footer.jsx                 # Rodapé institucional completo
 │   ├── config/
-│   │   └── store.js               # Central de configurações e contatos
+│   │   └── store.js                   # Configurações centrais da loja e canais de contato
 │   ├── context/
-│   │   └── CartContext.jsx        # Estado global do carrinho com persistência (localStorage)
+│   │   └── CartContext.jsx            # Gerenciamento global de carrinho, frete e modais
 │   ├── data/
-│   │   └── products.js            # Cardápio centralizado com todos os 18 produtos
+│   │   └── products.js                # Banco de dados e motor de filtragem de faróis
 │   ├── styles/
-│   │   └── index.css              # Tema Dark sofisticado, glassmorphism e cores Caverna
+│   │   └── index.css                  # Cores e estilização com efeitos luminosos
 │   ├── utils/
-│   │   ├── format.js              # Formatação de preços (R$) e máscaras de telefone
-│   │   └── whatsapp.js            # Geração da mensagem oficial e link do WhatsApp
-│   ├── App.jsx                    # Aplicação principal
-│   └── main.jsx                   # Ponto de entrada
-├── index.html                     # HTML com SEO e tags semânticas
-├── package.json                   # Dependências React + Vite + Tailwind
-├── tailwind.config.js             # Paleta escura (grafite, carvão, vinho sutil)
-└── vite.config.js                 # Configuração do Vite
+│   │   ├── format.js                  # Máscaras de telefone, CEP, CNPJ e formatação R$
+│   │   └── whatsapp.js                # Gerador de mensagens estruturadas para WhatsApp
+│   ├── App.jsx                        # Componente raiz montando a estrutura completa
+│   └── main.jsx                       # Ponto de entrada React 18
+├── index.html                         # Metadados de SEO, OpenGraph e fontes Google
+├── tailwind.config.js                 # Paleta oficial Secret Parts (#08090B, #F20D25, etc.)
+└── vite.config.js                     # Configuração do Vite
 ```
-
----
-
-## 📱 Fluxo Completo do Pedido
-
-1. **Cliente entra no site** e visualiza o visual marcante da Caverna Burger.
-2. **Navega pelo cardápio** por categorias (Burgers 150g, Smash Burgers, Milkshakes).
-3. **Clica em um produto** para ver detalhes, foto grande e ingredientes.
-4. **Define a quantidade e adiciona observações específicas** (ex: *"sem cebola"*, *"molho separado"*).
-5. **Adiciona à comanda**.
-6. **No carrinho**, revisa os itens e pode adicionar observações gerais para o pedido.
-7. **No checkout**, seleciona **Entrega** (informa rua, número, bairro, complemento) ou **Retirada no Local** (dispensa endereço).
-8. **Revisa o pedido** em uma tela limpa e clara.
-9. **Clica em "Enviar Pedido pelo WhatsApp"**: o WhatsApp abre automaticamente com a mensagem estruturada pronta para envio!

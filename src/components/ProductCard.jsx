@@ -1,14 +1,37 @@
 import React, { useState } from 'react';
-import { Plus, Check, Eye, Flame, AlertCircle } from 'lucide-react';
+import { 
+  Plus, 
+  Check, 
+  Eye, 
+  Heart, 
+  ShieldCheck, 
+  AlertCircle, 
+  CheckCircle2, 
+  Clock, 
+  HelpCircle,
+  Truck,
+  Sparkles,
+  Building2
+} from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { formatPrice } from '../utils/format';
+import { STOCK_STATUS_CONFIG } from '../data/products';
 
 export default function ProductCard({ product }) {
-  const { addToCart, openProductModal } = useCart();
+  const { 
+    addToCart, 
+    openProductModal, 
+    toggleFavorite, 
+    isFavorite,
+    openCompatibilityModal 
+  } = useCart();
+  
   const [isAddedAnim, setIsAddedAnim] = useState(false);
 
-  const isAvailable = product.available !== false;
+  const isAvailable = product.stockStatus !== 'indisponivel';
   const isPriced = product.price && product.price > 0;
+  const statusInfo = STOCK_STATUS_CONFIG[product.stockStatus] || STOCK_STATUS_CONFIG.disponivel;
+  const favorite = isFavorite(product.id);
 
   const handleQuickAdd = (e) => {
     e.stopPropagation();
@@ -23,105 +46,207 @@ export default function ProductCard({ product }) {
     openProductModal(product);
   };
 
+  const handleFavoriteClick = (e) => {
+    e.stopPropagation();
+    toggleFavorite(product.id);
+  };
+
   return (
     <article
       onClick={handleCardClick}
-      className={`group relative flex flex-col justify-between bg-caverna-850 hover:bg-caverna-800/90 rounded-2xl overflow-hidden border border-caverna-700/60 hover:border-redaccent-800/60 shadow-caverna-card transition-all duration-300 transform hover:-translate-y-1 cursor-pointer ${
-        !isAvailable ? 'opacity-60 grayscale' : ''
+      className={`group relative flex flex-col justify-between bg-secret-card hover:bg-secret-cardHover rounded-2xl overflow-hidden border border-secret-border hover:border-redaccent-800/80 shadow-secret-card transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer ${
+        !isAvailable ? 'opacity-65 grayscale' : ''
       }`}
     >
       <div>
+        
         {/* PRODUCT IMAGE CONTAINER */}
-        <div className="relative w-full aspect-[4/3] overflow-hidden bg-caverna-900">
+        <div className="relative w-full aspect-[4/3] overflow-hidden bg-secret-dark">
           <img
-            src={product.image}
+            src={product.images?.[0] || './images/products/farol-onix.jpg'}
             alt={product.name}
             loading="lazy"
             className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-out"
             onError={(e) => {
               e.target.onerror = null;
-              e.target.src = './images/products/caverna-burguer.jpg';
+              e.target.src = './images/products/farol-onix.jpg';
             }}
           />
 
-          {/* GRADIENT OVERLAY ON HOVER */}
-          <div className="absolute inset-0 bg-gradient-to-t from-caverna-900 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
+          {/* GRADIENT OVERLAY */}
+          <div className="absolute inset-0 bg-gradient-to-t from-secret-card via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity" />
 
-          {/* BADGES */}
-          <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
-            {product.featured && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-redaccent-700/90 text-white backdrop-blur-sm shadow-md border border-redaccent-600/40">
-                <Flame className="w-3 h-3 fill-white" />
-                Favorito
+          {/* TOP BADGES */}
+          <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
+            {product.isOffer && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider bg-redaccent-600 text-white shadow-md">
+                Oferta Especial
               </span>
             )}
-            {!isAvailable && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-caverna-700/90 text-caverna-300 backdrop-blur-sm shadow-md border border-caverna-600">
-                <AlertCircle className="w-3 h-3" />
-                Indisponível
+            {product.featured && !product.isOffer && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-secret-surface/90 text-white border border-secret-border shadow-md backdrop-blur-sm">
+                <Sparkles className="w-3 h-3 text-redaccent-500" />
+                Destaque
+              </span>
+            )}
+            {product.sideLabel && (
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold bg-secret-dark/85 text-secret-muted border border-secret-border/70 backdrop-blur-sm">
+                {product.sideLabel}
               </span>
             )}
           </div>
 
-          {/* QUICK VIEW ICON OVERLAY ON HOVER */}
-          <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity p-2 rounded-full bg-caverna-950/80 text-white border border-white/10 shadow-lg">
-            <Eye className="w-4 h-4 text-caverna-200" />
+          {/* TOP RIGHT ICONS: FAVORITE & QUICK VIEW */}
+          <div className="absolute top-3 right-3 flex items-center gap-1.5 z-10">
+            <button
+              type="button"
+              onClick={handleFavoriteClick}
+              aria-label={favorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+              className="p-2 rounded-full bg-secret-dark/80 hover:bg-secret-dark text-secret-muted hover:text-white border border-white/10 transition-colors shadow-md"
+            >
+              <Heart className={`w-3.5 h-3.5 ${favorite ? 'text-redaccent-500 fill-redaccent-500' : ''}`} />
+            </button>
+
+            <div className="p-2 rounded-full bg-secret-dark/80 text-secret-muted border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity shadow-md hidden sm:block">
+              <Eye className="w-3.5 h-3.5 text-secret-muted" />
+            </div>
           </div>
+
+          {/* STOCK STATUS PILL (BOTTOM OF IMAGE) */}
+          <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[11px] z-10">
+            <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold border ${statusInfo.bg} ${statusInfo.color} backdrop-blur-md`}>
+              <span className="w-1.5 h-1.5 rounded-full bg-current" />
+              {statusInfo.label}
+            </span>
+
+            {product.sku && (
+              <span className="text-[10px] font-mono text-secret-subtle bg-secret-dark/80 px-1.5 py-0.5 rounded border border-secret-border/50">
+                {product.sku}
+              </span>
+            )}
+          </div>
+
         </div>
 
         {/* CONTENT */}
-        <div className="p-4 sm:p-5 flex flex-col space-y-2">
+        <div className="p-4 sm:p-5 flex flex-col space-y-2.5">
+          
+          {/* VEHICLE COMPATIBILITY TAG */}
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-redaccent-400 truncate">
+              {product.vehicleBrand} {product.vehicleModel} ({product.yearStart} - {product.yearEnd})
+            </span>
+            {product.manufacturer && (
+              <span className="text-[10px] font-semibold text-secret-subtle flex-shrink-0">
+                {product.manufacturer}
+              </span>
+            )}
+          </div>
+
           {/* TITLE */}
-          <h3 className="font-display font-bold text-base sm:text-lg text-white group-hover:text-redaccent-400 transition-colors line-clamp-1">
+          <h3 className="font-display font-bold text-sm sm:text-base text-white group-hover:text-redaccent-400 transition-colors line-clamp-2 leading-snug">
             {product.name}
           </h3>
 
-          {/* DESCRIPTION */}
-          <p className="text-xs sm:text-sm text-caverna-400 font-normal line-clamp-2 leading-relaxed">
-            {product.description}
-          </p>
+          {/* TECHNICAL DETAILS CHIPS */}
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            {product.typeLabel && (
+              <span className="text-[10px] px-2 py-0.5 rounded bg-secret-surface border border-secret-border text-secret-muted">
+                {product.typeLabel}
+              </span>
+            )}
+            {product.oemCode && (
+              <span className="text-[10px] px-2 py-0.5 rounded bg-secret-surface border border-secret-border text-secret-subtle font-mono">
+                OEM: {product.oemCode}
+              </span>
+            )}
+          </div>
+
         </div>
       </div>
 
-      {/* FOOTER: PRICE & ADD BUTTON */}
-      <div className="p-4 sm:p-5 pt-0 mt-3 flex items-center justify-between gap-3 border-t border-caverna-750/60">
-        <div className="flex flex-col">
-          <span className="text-[10px] uppercase font-semibold text-caverna-500 tracking-wider">
-            Preço
-          </span>
-          <span className={`font-display font-extrabold text-base sm:text-lg ${isPriced ? 'text-white' : 'text-caverna-400 font-medium italic text-sm'}`}>
-            {formatPrice(product.price)}
-          </span>
+      {/* FOOTER: PRICING & CALL TO ACTION */}
+      <div className="p-4 sm:p-5 pt-2 border-t border-secret-border/80 flex flex-col space-y-3">
+        
+        {/* PRICE BLOCK */}
+        <div className="flex items-baseline justify-between">
+          <div>
+            {product.originalPrice && product.isOffer && (
+              <span className="text-xs text-secret-subtle line-through block">
+                {formatPrice(product.originalPrice)}
+              </span>
+            )}
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-[10px] uppercase font-bold text-secret-subtle">
+                Varejo:
+              </span>
+              <span className="font-display font-black text-lg sm:text-xl text-white">
+                {formatPrice(product.price)}
+              </span>
+            </div>
+          </div>
+
+          {product.wholesalePrice && (
+            <div className="text-right">
+              <span className="text-[10px] uppercase font-bold text-redaccent-400 block flex items-center justify-end gap-1">
+                <Building2 className="w-3 h-3" /> No Atacado:
+              </span>
+              <span className="text-xs font-bold text-secret-muted">
+                {formatPrice(product.wholesalePrice)} <span className="text-[10px] font-normal text-secret-subtle">({product.wholesaleMinQty || 4}+ un.)</span>
+              </span>
+            </div>
+          )}
         </div>
 
-        {isAvailable ? (
+        {/* ACTION BUTTONS */}
+        <div className="grid grid-cols-2 gap-2">
+          
           <button
             type="button"
-            onClick={handleQuickAdd}
-            aria-label={`Adicionar ${product.name} à comanda`}
-            className={`flex items-center justify-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-redaccent-500 ${
-              isAddedAnim
-                ? 'bg-emerald-700 text-white'
-                : 'bg-redaccent-700 hover:bg-redaccent-600 text-white active:scale-95'
-            }`}
+            onClick={(e) => {
+              e.stopPropagation();
+              openProductModal(product);
+            }}
+            className="w-full py-2.5 px-3 rounded-xl bg-secret-surface hover:bg-secret-border border border-secret-border text-white text-xs font-bold uppercase tracking-wider transition-colors text-center"
           >
-            {isAddedAnim ? (
-              <>
-                <Check className="w-4 h-4 animate-cart-pop" />
-                <span className="hidden xs:inline">Adicionado</span>
-              </>
-            ) : (
-              <>
-                <Plus className="w-4 h-4" />
-                <span>Adicionar</span>
-              </>
-            )}
+            Ver Detalhes
           </button>
-        ) : (
-          <span className="text-xs font-semibold text-caverna-500 px-3 py-1.5 rounded-lg bg-caverna-800 border border-caverna-700">
-            Esgotado
-          </span>
-        )}
+
+          {isAvailable ? (
+            <button
+              type="button"
+              onClick={handleQuickAdd}
+              aria-label={`Adicionar ${product.name} ao carrinho`}
+              className={`w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all shadow-sm focus:outline-none ${
+                isAddedAnim
+                  ? 'bg-emerald-600 text-white'
+                  : 'bg-redaccent-600 hover:bg-redaccent-500 text-white active:scale-95'
+              }`}
+            >
+              {isAddedAnim ? (
+                <>
+                  <Check className="w-4 h-4 animate-cart-pop" />
+                  <span>No Carrinho</span>
+                </>
+              ) : (
+                <>
+                  <Plus className="w-4 h-4" />
+                  <span>Comprar</span>
+                </>
+              )}
+            </button>
+          ) : (
+            <button
+              type="button"
+              disabled
+              className="w-full py-2.5 px-3 rounded-xl bg-secret-dark text-secret-subtle text-xs font-semibold border border-secret-border cursor-not-allowed"
+            >
+              Esgotado
+            </button>
+          )}
+
+        </div>
+
       </div>
     </article>
   );
