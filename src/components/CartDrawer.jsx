@@ -206,47 +206,6 @@ export default function CartDrawer() {
                   );
                 })}
 
-                {/* MODALIDADE DE ENVIO NO CARRINHO */}
-                <div className="p-4 rounded-2xl bg-secret-card border border-secret-border space-y-3">
-                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-secret-muted">
-                    <Truck className="w-4 h-4 text-redaccent-400" />
-                    <span>Opção de Envio / Entrega</span>
-                  </div>
-
-                  <div className="space-y-2">
-                    {STORE_CONFIG.shippingOptions.map(option => (
-                      <label
-                        key={option.id}
-                        className={`flex items-start justify-between p-2.5 rounded-xl border text-xs cursor-pointer transition-colors ${
-                          selectedShippingId === option.id
-                            ? 'bg-secret-surface border-redaccent-600 text-white'
-                            : 'bg-secret-surface/60 border-secret-border text-secret-muted hover:border-secret-borderLight'
-                        }`}
-                      >
-                        <div className="flex items-start gap-2.5">
-                          <input
-                            type="radio"
-                            name="cart-shipping"
-                            checked={selectedShippingId === option.id}
-                            onChange={() => setSelectedShippingId(option.id)}
-                            className="mt-0.5 text-redaccent-600 focus:ring-redaccent-500"
-                          />
-                          <div>
-                            <span className="font-bold block">{option.name}</span>
-                            <span className="text-[11px] text-secret-subtle">{option.estimate}</span>
-                          </div>
-                        </div>
-
-                        <span className="font-bold">
-                          {option.freeAbove && subtotal >= option.freeAbove
-                            ? 'Grátis'
-                            : option.price > 0 ? formatPrice(option.price) : 'Grátis'}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
               </div>
             )}
 
@@ -263,14 +222,14 @@ export default function CartDrawer() {
                 </div>
 
                 <div className="flex items-center justify-between text-secret-muted">
-                  <span>Envio Estimado:</span>
+                  <span>Entrega:</span>
                   <span className="font-semibold text-emerald-400">
-                    {shippingCost > 0 ? formatPrice(shippingCost) : 'Grátis / A combinar'}
+                    {STORE_CONFIG.shippingLabel}
                   </span>
                 </div>
 
                 <div className="pt-2 border-t border-secret-border flex items-center justify-between text-base font-bold">
-                  <span className="text-white font-display">Total do Pedido:</span>
+                  <span className="text-white font-display">Total das Peças:</span>
                   <span className="font-display font-black text-xl text-white">
                     {formatPrice(total)}
                   </span>

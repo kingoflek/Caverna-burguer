@@ -63,10 +63,9 @@ export default function OrderReviewModal() {
       items,
       customer,
       subtotal,
-      shippingOption: {
-        ...selectedShippingOption,
-        price: shippingCost
-      },
+      shippingOption: STORE_CONFIG.shippingOptions.find(
+        opt => opt.id === (isDelivery ? 'local_delivery' : 'pickup')
+      ) || selectedShippingOption,
       total,
       hasUnpricedItems
     };
@@ -176,9 +175,9 @@ export default function OrderReviewModal() {
               </div>
               
               <div className="flex items-center justify-between">
-                <span>Opção de Envio ({selectedShippingOption?.name}):</span>
+                <span>Entrega:</span>
                 <span className="font-semibold text-emerald-400">
-                  {shippingCost > 0 ? formatPrice(shippingCost) : 'Grátis / A combinar'}
+                  {STORE_CONFIG.shippingLabel}
                 </span>
               </div>
 

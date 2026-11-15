@@ -34,7 +34,8 @@ assert.strictEqual(STORE_CONFIG.name, 'Secret Parts');
 assert.strictEqual(STORE_CONFIG.displayName, 'SECRET PARTS');
 assert(STORE_CONFIG.tagline.includes('Faróis'));
 assert(Array.isArray(STORE_CONFIG.shippingOptions));
-assert(STORE_CONFIG.shippingOptions.length >= 3);
+assert(STORE_CONFIG.shippingOptions.length >= 2);
+assert(STORE_CONFIG.shippingOptions.every(o => o.price === 0), "O site não deve cobrar frete (entrega combinada no WhatsApp)");
 assert(STORE_CONFIG.adminPin.length > 4);
 console.log('   ✓ Configuração institucional da Secret Parts validada.');
 
