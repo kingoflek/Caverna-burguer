@@ -6,7 +6,6 @@ import {
   ShoppingBag, 
   MessageCircle, 
   HelpCircle, 
-  ShieldCheck, 
   Truck, 
   RotateCcw, 
   Check, 
@@ -163,16 +162,12 @@ export default function ProductModal() {
               {/* TRUST BOXES */}
               <div className="space-y-2 pt-2 text-xs text-secret-muted">
                 <div className="flex items-center gap-2 p-2.5 rounded-lg bg-secret-card/60 border border-secret-border/50">
-                  <ShieldCheck className="w-4 h-4 text-redaccent-400 flex-shrink-0" />
-                  <span>{STORE_CONFIG.warranty}</span>
-                </div>
-                <div className="flex items-center gap-2 p-2.5 rounded-lg bg-secret-card/60 border border-secret-border/50">
                   <RotateCcw className="w-4 h-4 text-emerald-400 flex-shrink-0" />
                   <span>{STORE_CONFIG.returnPolicy}</span>
                 </div>
                 <div className="flex items-center gap-2 p-2.5 rounded-lg bg-secret-card/60 border border-secret-border/50">
                   <Truck className="w-4 h-4 text-sky-400 flex-shrink-0" />
-                  <span>Entrega expressa regional ou transportadora</span>
+                  <span>Entrega local sem custo, combinada no WhatsApp</span>
                 </div>
               </div>
             </div>

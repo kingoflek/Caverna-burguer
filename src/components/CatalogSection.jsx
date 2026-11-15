@@ -132,7 +132,7 @@ export default function CatalogSection({
               Catálogo de Faróis Automotivos
             </h2>
             <p className="text-xs sm:text-sm text-secret-muted mt-1 max-w-2xl">
-              Filtre por marca, modelo, ano e lado para encontrar a peça exata do seu carro. Todos os faróis com garantia legal e conferência de compatibilidade.
+              Filtre por marca, modelo, ano e lado para encontrar a peça exata do seu carro. Todos os faróis com conferência de compatibilidade.
             </p>
           </div>
 
