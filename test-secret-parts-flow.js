@@ -46,7 +46,7 @@ const invalidKeywords = ['burger', 'hambúrguer', 'bacon', 'lanche', 'milkshake'
 
 PRODUCTS.forEach(p => {
   // Garante que é um farol
-  assert(p.name.toLowerCase().includes('farol') || p.name.toLowerCase().includes('par de faróis'), `Produto ${p.name} não é um farol automotivo!`);
+  assert(/farol|faróis|lanterna/.test(p.name.toLowerCase()), `Produto ${p.name} não é farol nem lanterna automotiva!`);
   
   // Garante que não possui palavras de lanchonete ou outras autopeças não comercializadas
   invalidKeywords.forEach(kw => {
@@ -61,7 +61,7 @@ PRODUCTS.forEach(p => {
   assert(p.yearStart <= p.yearEnd, `Produto ${p.id} com ano inicial maior que ano final`);
   assert(['esquerdo', 'direito', 'par'].includes(p.side), `Produto ${p.id} com lado inválido: ${p.side}`);
   assert(p.sku, `Produto ${p.id} sem código SKU`);
-  assert(p.price > 0, `Produto ${p.id} com preço inválido`);
+  assert(typeof p.price === 'number' && p.price >= 0, `Produto ${p.id} com preço inválido (use 0 para sob consulta)`);
   assert(Array.isArray(p.images) && p.images.length > 0, `Produto ${p.id} sem imagens`);
   assert(p.compatibilityNotes, `Produto ${p.id} sem observações de compatibilidade`);
 });
@@ -71,14 +71,19 @@ console.log(`   ✓ Todos os ${PRODUCTS.length} produtos são faróis legítimos
 console.log('\n3. Testando motor de busca e filtragem multifacetada...');
 
 // Busca por modelo
-const onixList = filterProducts({ searchQuery: 'Onix' });
-assert(onixList.length >= 2, `Esperado faróis de Onix, encontrados: ${onixList.length}`);
-onixList.forEach(p => assert(p.vehicleModel === 'Onix' || p.compatibilityNotes.includes('Onix')));
+const palioList = filterProducts({ searchQuery: 'Palio' });
+assert(palioList.length >= 2, `Esperado faróis de Palio, encontrados: ${palioList.length}`);
+palioList.forEach(p => assert(p.vehicleModels.includes('Palio') || p.compatibilityNotes.includes('Palio')));
+
+// Filtro por modelo secundário (farol que serve em vários carros)
+const sienaList = filterProducts({ model: 'Siena' });
+assert(sienaList.length >= 2, `Esperado faróis compatíveis com Siena, encontrados: ${sienaList.length}`);
+sienaList.forEach(p => assert(p.vehicleModels.includes('Siena')));
 
 // Filtro por marca
-const toyotaList = filterProducts({ brand: 'Toyota' });
-assert(toyotaList.length >= 2, `Esperado faróis Toyota, encontrados: ${toyotaList.length}`);
-toyotaList.forEach(p => assert.strictEqual(p.vehicleBrand, 'Toyota'));
+const fiatList = filterProducts({ brand: 'Fiat' });
+assert(fiatList.length >= 2, `Esperado faróis Fiat, encontrados: ${fiatList.length}`);
+fiatList.forEach(p => assert.strictEqual(p.vehicleBrand, 'Fiat'));
 
 // Filtro por ano (ex: 2018 deve encontrar Corolla 2015-2019 e Polo 2018-2022)
 const year2018List = filterProducts({ year: '2018' });
@@ -93,10 +98,10 @@ leftSideList.forEach(p => {
   assert(p.side === 'esquerdo' || p.side === 'par');
 });
 
-// Filtro combinado: Marca Toyota + Lado Esquerdo
-const toyotaLeft = filterProducts({ brand: 'Toyota', side: 'esquerdo' });
-toyotaLeft.forEach(p => {
-  assert.strictEqual(p.vehicleBrand, 'Toyota');
+// Filtro combinado: Marca Fiat + Lado Esquerdo
+const fiatLeft = filterProducts({ brand: 'Fiat', side: 'esquerdo' });
+fiatLeft.forEach(p => {
+  assert.strictEqual(p.vehicleBrand, 'Fiat');
   assert(p.side === 'esquerdo' || p.side === 'par');
 });
 

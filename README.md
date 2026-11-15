@@ -40,7 +40,7 @@ npm run deploy
 - Geração de proposta comercial estruturada com dados da empresa (Razão Social, CNPJ, Cidade/UF, volume e códigos desejados).
 
 ### 3. Logística e Entrega Regional
-- Simulador de CEP e opções de envio regional configuradas em [`src/config/store.js`](file:///C:/Users/delta/.gemini/antigravity/scratch/caverna-burger/src/config/store.js):
+- Simulador de CEP e opções de envio regional configuradas em [`src/config/store.js`](src/config/store.js):
   - **Entrega Expressa Regional:** envio rápido por motoboy / utilitário.
   - **Transportadora / Rodoviário:** embalagens reforçadas contra impactos.
   - **Retirada no Centro de Distribuição:** balcão de peças com separação ágil.
@@ -50,7 +50,7 @@ npm run deploy
 ## 🛠️ Guia do Proprietário (Onde e Como Alterar)
 
 ### 📍 1. Configurações da Loja e WhatsApp
-**Arquivo:** [`src/config/store.js`](file:///C:/Users/delta/.gemini/antigravity/scratch/caverna-burger/src/config/store.js)
+**Arquivo:** [`src/config/store.js`](src/config/store.js)
 
 ```javascript
 export const STORE_CONFIG = {
@@ -75,7 +75,7 @@ export const STORE_CONFIG = {
 ---
 
 ### 💡 2. Como Cadastrar e Atualizar Faróis com o Antigravity
-**Arquivo:** [`src/data/products.js`](file:///C:/Users/delta/.gemini/antigravity/scratch/caverna-burger/src/data/products.js)
+**Arquivo:** [`src/data/products.js`](src/data/products.js)
 
 Todo o catálogo de faróis está centralizado neste arquivo com estrutura rica e tipada:
 

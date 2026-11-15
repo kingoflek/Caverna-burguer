@@ -133,7 +133,7 @@ export default function Header({ onSearchSubmit }) {
                   setHeaderSearch(e.target.value);
                   if (onSearchSubmit) onSearchSubmit(e.target.value);
                 }}
-                placeholder="Busque por peça, modelo (ex: Onix, Gol, Corolla), marca ou código OEM..."
+                placeholder="Busque por peça, modelo (ex: Gol, Palio, Celta), marca ou código OEM..."
                 className="w-full pl-10 pr-24 py-2.5 rounded-full bg-secret-surface border border-secret-border text-white placeholder-secret-subtle text-xs sm:text-sm focus:outline-none focus:border-redaccent-500 focus:ring-1 focus:ring-redaccent-500 transition-colors shadow-inner"
               />
               <Search className="w-4 h-4 text-secret-subtle absolute left-3.5 top-3" />
@@ -238,7 +238,7 @@ export default function Header({ onSearchSubmit }) {
               setHeaderSearch(e.target.value);
               if (onSearchSubmit) onSearchSubmit(e.target.value);
             }}
-            placeholder="Buscar por veículo (ex: Onix, Gol, Corolla) ou código..."
+            placeholder="Buscar por veículo (ex: Gol, Palio, Celta) ou código..."
             className="w-full pl-9 pr-20 py-2 rounded-full bg-secret-surface border border-secret-border text-white placeholder-secret-subtle text-xs focus:outline-none focus:border-redaccent-500"
           />
           <Search className="w-3.5 h-3.5 text-secret-subtle absolute left-3 top-2.5" />
