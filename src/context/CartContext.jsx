@@ -217,11 +217,8 @@ export function CartProvider({ children }) {
     opt => opt.id === selectedShippingId
   ) || STORE_CONFIG.shippingOptions[0];
 
-  const shippingCost = customer.orderType === 'pickup'
-    ? 0
-    : (selectedShippingOption?.freeAbove && subtotal >= selectedShippingOption.freeAbove)
-    ? 0
-    : (selectedShippingOption?.price || 0);
+  // O site não cobra frete: entrega é combinada no WhatsApp
+  const shippingCost = 0;
 
   const total = subtotal + shippingCost;
 

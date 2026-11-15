@@ -1,4 +1,4 @@
-name: Deploy Caverna Burger to GitHub Pages
+name: Deploy Secret Parts to GitHub Pages
 
 on:
   push:

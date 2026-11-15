@@ -399,7 +399,7 @@ export default function CatalogSection({
                 Nenhum farol encontrado para esses critérios
               </h3>
               <p className="text-xs sm:text-sm text-secret-muted leading-relaxed">
-                Tente buscar apenas pelo modelo do carro (ex: "Onix", "Gol", "Corolla") ou limpe os filtros para visualizar todo o catálogo.
+                Tente buscar apenas pelo modelo do carro (ex: "Gol", "Palio", "Celta") ou limpe os filtros para visualizar todo o catálogo.
               </p>
             </div>
 

@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { formatPrice } from '../utils/format';
-import { STOCK_STATUS_CONFIG } from '../data/products';
+import { STOCK_STATUS_CONFIG, getProductModels } from '../data/products';
 
 export default function ProductCard({ product }) {
   const { 
@@ -134,7 +134,7 @@ export default function ProductCard({ product }) {
           {/* VEHICLE COMPATIBILITY TAG */}
           <div className="flex items-center justify-between gap-2">
             <span className="text-[11px] font-bold uppercase tracking-wider text-redaccent-400 truncate">
-              {product.vehicleBrand} {product.vehicleModel} ({product.yearStart} - {product.yearEnd})
+              {product.vehicleBrand} {getProductModels(product).join(' / ')} ({product.yearStart} - {product.yearEnd})
             </span>
             {product.manufacturer && (
               <span className="text-[10px] font-semibold text-secret-subtle flex-shrink-0">
@@ -178,7 +178,7 @@ export default function ProductCard({ product }) {
             )}
             <div className="flex items-baseline gap-1.5">
               <span className="text-[10px] uppercase font-bold text-secret-subtle">
-                Varejo:
+                {isPriced ? 'Varejo:' : 'Preço:'}
               </span>
               <span className="font-display font-black text-lg sm:text-xl text-white">
                 {formatPrice(product.price)}

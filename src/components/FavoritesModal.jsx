@@ -1,7 +1,7 @@
 import React from 'react';
 import { X, Heart, Trash2, ShoppingBag, ArrowRight } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { PRODUCTS } from '../data/products';
+import { PRODUCTS, getProductModels } from '../data/products';
 import { formatPrice } from '../utils/format';
 
 export default function FavoritesModal() {
@@ -87,7 +87,7 @@ export default function FavoritesModal() {
                   />
                   <div className="min-w-0 flex-1 text-xs">
                     <span className="text-[10px] uppercase font-bold text-redaccent-400 block truncate">
-                      {product.vehicleBrand} {product.vehicleModel} ({product.yearStart}-{product.yearEnd})
+                      {product.vehicleBrand} {getProductModels(product).join(' / ')} ({product.yearStart}-{product.yearEnd})
                     </span>
                     <h5 className="font-bold text-white truncate text-sm">
                       {product.name}

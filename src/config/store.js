@@ -58,32 +58,24 @@ export const STORE_CONFIG = {
     distributorPageSubtitle: "Abasteça seu negócio com faróis automotivos e consulte condições comerciais para compras em quantidade.",
   },
 
-  // OPÇÕES REGIONAIS DE ENTREGA (Editável conforme a logística da loja)
+  // ENTREGA: o site não cobra frete. Entrega local sem custo (fidelização);
+  // prazo e detalhes são combinados com o cliente no WhatsApp.
+  shippingLabel: "A combinar no WhatsApp",
   shippingOptions: [
     {
-      id: "express_local",
-      name: "Entrega Expressa Regional",
-      description: "Envio rápido por motoboy / utilitário para a região atendida",
-      estimate: "Mesmo dia ou até 24h úteis",
-      price: 25.00,
+      id: "local_delivery",
+      name: "Entrega Local",
+      description: "Entregamos na região sem custo adicional. Prazo combinado no WhatsApp.",
+      estimate: "Combinado no atendimento",
+      price: 0,
       active: true,
-      freeAbove: 500.00, // Frete grátis acima deste valor
-    },
-    {
-      id: "carrier_national",
-      name: "Transportadora / Envio Regional Rodoviário",
-      description: "Embalagem reforçada anti-impacto especializada para faróis",
-      estimate: "2 a 5 dias úteis",
-      price: 45.00,
-      active: true,
-      freeAbove: 1000.00,
     },
     {
       id: "pickup",
-      name: "Retirada no Centro de Distribuição",
-      description: "Disponível para retirada após confirmação de separação da peça",
-      estimate: "Pronto em até 2h após confirmação",
-      price: 0.00,
+      name: "Retirada no Local",
+      description: "Retire a peça após a confirmação do pedido pelo WhatsApp.",
+      estimate: "Após confirmação",
+      price: 0,
       active: true,
     }
   ],

@@ -99,7 +99,7 @@ export default function RegionalDeliverySection() {
                 <span className="text-[11px] text-secret-subtle">Regras configuradas</span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {simulatedResult.options.map(option => (
                   <div key={option.id} className="p-4 rounded-2xl bg-secret-card border border-secret-border space-y-2">
                     <span className="text-xs font-bold text-white block">
@@ -113,7 +113,7 @@ export default function RegionalDeliverySection() {
                         {option.estimate}
                       </span>
                       <span className="text-sm font-bold text-emerald-400">
-                        {option.price > 0 ? formatPrice(option.price) : 'Grátis'}
+                        A combinar
                       </span>
                     </div>
                   </div>

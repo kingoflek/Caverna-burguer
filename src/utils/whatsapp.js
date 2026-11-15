@@ -49,11 +49,7 @@ export function buildRetailOrderMessage({
   lines.push(`Subtotal dos Faróis: ${hasUnpricedItems ? 'Sob consulta' : formatPrice(subtotal)}`);
   
   if (shippingOption) {
-    const shippingPrice = shippingOption.price > 0 ? formatPrice(shippingOption.price) : 'Grátis / A combinar';
-    lines.push(`Opção de Envio: ${shippingOption.name} (${shippingPrice})`);
-    if (shippingOption.estimate) {
-      lines.push(`Prazo Estimado: ${shippingOption.estimate}`);
-    }
+    lines.push(`Entrega: ${shippingOption.name} (valor e prazo a combinar)`);
   }
 
   const finalTotalText = hasUnpricedItems || total === 0 ? 'A confirmar com a equipe' : formatPrice(total);

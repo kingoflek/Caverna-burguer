@@ -19,8 +19,8 @@ export default function HowToBuySection() {
     {
       number: "03",
       icon: Truck,
-      title: "Escolha o Envio Regional",
-      description: "Selecione entre entrega rápida na sua região, envio por transportadora rodoviária ou retirada no balcão."
+      title: "Escolha Entrega ou Retirada",
+      description: "Entregamos na região sem custo adicional ou você retira no local. Prazo combinado pelo WhatsApp."
     },
     {
       number: "04",

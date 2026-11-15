@@ -185,7 +185,7 @@ export default function CheckoutModal() {
             </div>
 
             <div className="pt-2 border-t border-secret-border flex items-center justify-between font-bold text-xs sm:text-sm">
-              <span className="text-secret-muted">Total Estimado c/ Frete:</span>
+              <span className="text-secret-muted">Total das Peças (entrega a combinar):</span>
               <span className="text-white text-base font-display">
                 {formatPrice(total)}
               </span>
@@ -212,7 +212,7 @@ export default function CheckoutModal() {
                 >
                   <Truck className={`w-5 h-5 mb-1 ${customer.orderType === 'delivery' ? 'text-redaccent-400' : 'text-secret-subtle'}`} />
                   <span className="font-bold text-xs sm:text-sm">Envio / Entrega</span>
-                  <span className="text-[10px] text-secret-subtle">No seu endereço</span>
+                  <span className="text-[10px] text-secret-subtle">Sem custo na região</span>
                 </button>
 
                 <button
@@ -225,7 +225,7 @@ export default function CheckoutModal() {
                   }`}
                 >
                   <Store className={`w-5 h-5 mb-1 ${customer.orderType === 'pickup' ? 'text-redaccent-400' : 'text-secret-subtle'}`} />
-                  <span className="font-bold text-xs sm:text-sm">Retirada no CD</span>
+                  <span className="font-bold text-xs sm:text-sm">Retirada no Local</span>
                   <span className="text-[10px] text-secret-subtle">Direto no balcão</span>
                 </button>
               </div>

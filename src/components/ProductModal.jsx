@@ -20,7 +20,7 @@ import {
 import { useCart } from '../context/CartContext';
 import { formatPrice } from '../utils/format';
 import { STORE_CONFIG } from '../config/store';
-import { STOCK_STATUS_CONFIG } from '../data/products';
+import { STOCK_STATUS_CONFIG, getProductModels } from '../data/products';
 import { buildCompatibilityInquiryMessage, generateWhatsAppUrl } from '../utils/whatsapp';
 
 export default function ProductModal() {
@@ -184,7 +184,7 @@ export default function ProductModal() {
               <div>
                 <div className="flex flex-wrap items-center gap-2 mb-2">
                   <span className="text-[11px] font-extrabold uppercase tracking-widest text-redaccent-400 bg-redaccent-950/60 px-2.5 py-1 rounded border border-redaccent-800/60">
-                    {selectedProduct.vehicleBrand} • {selectedProduct.vehicleModel}
+                    {selectedProduct.vehicleBrand} • {getProductModels(selectedProduct).join(' / ')}
                   </span>
                   <span className="text-[11px] font-semibold text-secret-muted bg-secret-card px-2.5 py-1 rounded border border-secret-border">
                     Anos: {selectedProduct.yearStart} a {selectedProduct.yearEnd}
@@ -222,7 +222,7 @@ export default function ProductModal() {
                     Fabricante
                   </span>
                   <span className="font-semibold text-white">
-                    {selectedProduct.manufacturer || 'Linha Original'}
+                    {selectedProduct.manufacturer || 'Consulte'}
                   </span>
                 </div>
               </div>
